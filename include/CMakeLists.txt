@@ -10,8 +10,21 @@ add_library(
     ${CMAKE_CURRENT_SOURCE_DIR}/atomic_queue/spinlock.h
 )
 
+add_library(
+    shm
+    INTERFACE
+    ${CMAKE_CURRENT_SOURCE_DIR}/shm/base_shm_area.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/shm/xsi_shm_area.h
+)
+
 target_include_directories(
     atomic_queue
+    INTERFACE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_include_directories(
+    shm
     INTERFACE
     ${CMAKE_CURRENT_SOURCE_DIR}
 )

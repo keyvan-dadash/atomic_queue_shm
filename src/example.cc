@@ -16,10 +16,10 @@ int main() {
 
     using Element = uint32_t; // Queue element type.
     Element constexpr NIL = static_cast<Element>(-1); // Atomic elements require a special value that cannot be pushed/popped.
-    using Queue = atomic_queue::AtomicQueueB<Element, std::allocator<Element>, NIL>; // Use heap-allocated buffer.
+    using Queue = atomic_queue::AtomicQueue2<Element, CAPACITY>; // Use heap-allocated buffer.
 
     // Create a queue object shared between all producers and consumers.
-    Queue q{CAPACITY};
+    Queue q;
 
     // Start the consumers.
     uint64_t sums[CONSUMERS];
@@ -68,6 +68,7 @@ int main() {
 
     // Verify that each element has been pop'ed exactly once; not corrupted, dropped or duplicated.
     uint64_t constexpr expected_total_sum = (N + 1) / 2. * N * PRODUCERS;
+    std::cout << expected_total_sum << std::endl;
     if(int64_t total_sum_diff = total_sum - expected_total_sum) {
         std::cerr << "ERROR: unexpected total_sum difference " << total_sum_diff << '\n';
         return EXIT_FAILURE;
