@@ -1,5 +1,6 @@
 // consumer.cpp
 #include "atomic_queue/atomic_queue.h"
+#include "shm/posix_channel.h"
 #include "shm/xsi_channel.h"
 
 #include <chrono>
@@ -12,8 +13,10 @@ constexpr unsigned NUM_OF_COND = 1;
 using Element = uint32_t;
 
 int main() {
-    shm::xsi::XSIChannel<Element, CAPACITY, NUM_OF_COND> channel("/tmp/shared_queue_file",
-        shm::xsi::XSI_CHANNEL_EXC);
+    //shm::xsi::XSIChannel<Element, CAPACITY, NUM_OF_COND> channel("/tmp/shared_queue_file",
+        //shm::xsi::XSI_CHANNEL_EXC);
+
+    shm::posix::POSIXChannel<Element, CAPACITY, NUM_OF_COND> channel("shared_queue_file", shm::posix::POSIX_CHANNEL_EXC);
     auto* sq = channel.GetQueue();
 
     uint64_t sum = 0;
